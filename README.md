@@ -3,13 +3,72 @@
 This gem is a thin wrapper to fix some of the non-conformance of the ruby
 protobuff plugin
 
-## Usage
 
+## Encoding
+Protobuf3Fixer changes the encoding behavior to properly encode some well known types.
+
+## Encoding Options
+The default protobuf encoding contains a set of encoding options, which are not
+quite obvious. You may specify any of these arguments in the PB3Fixer library via
+an options hash.
+
+### Emit Defaults
+Given the following proto:
+
+```
+message TestMsg {
+  string field = 1;
+}
+```
+
+```ruby
+Protobuf3Fixer.encode_json(TestMsg.new)
+# => {}
+
+Protobuf3Fixer.encode_json(TestMsg.new, emit_defaults: true)
+# => {"field":""}
+```
+
+### Timestamps (Well Known Type)
+Given the following protofile:
+```ruby
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package testing.examples.timestamp;
+
+message SubTs {
+  google.protobuf.Timestamp ts = 2;
+}
+```
+
+The default behavior of the Proto library is:
+```ruby
+Testing::Examples::Timestamp::SubTs.new(
+  ts: Google::Protobuf::Timestamp.new(seconds: 10)
+).to_json
+# => {"ts":{"seconds":10}}
+```
+
+This is incorrect as the specification calls for Timestamps to be encoded as an
+RFC3339 string
+
+Using Proto3Fixer, you get this behavior:
+
+```ruby
+Protobuf3Fixer.encode_json(Testing::Examples::Timestamp::SubTs.new(
+  ts: Google::Protobuf::Timestamp.new(seconds: 10)
+))
+# => {"ts":"1970-01-01T00:00:10+00:00"}
+```
+
+
+
+## Decoding
 ```ruby
 Protobuf3Fixer.decode_json(ProtobufMessageClass, json_string)
 ```
-
-## Fixes
 
 Ignores unknown fields, given the following proto definition:
 
