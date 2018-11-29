@@ -26,3 +26,29 @@ message SuperSubField1 {
 
 If you read the JSON produced by SuperSubField1 into SubField1, an error is
 thrown. This library fixes this backwards incompatibility issue.
+
+## Generation Helpers
+Some of the methods to build a protobuf a are a bit heavy weight. This module
+provides a thin wrapper for some methods to make them more natural.
+
+These helpers have been added in a separate module in hopes the default protobuf
+library will add them
+
+### Timestamp (Well Known Types)
+The provided library requires the following code to generate a timestamp
+
+```ruby
+Google::Protobuf::Timestamp.new(seconds: Time.now.to_i, nanos: Time.now.nsec)
+# or
+stamp = Google::Protobuf::Timestamp.new
+stamp.from_time(Time.now)
+```
+
+Both of these are unnecessarily verbose.
+
+Instead consider:
+
+```ruby
+Protobuf3Fixer::GenerationHelpers.create_timestamp(Time.now)
+```
+

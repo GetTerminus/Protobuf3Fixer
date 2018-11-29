@@ -7,6 +7,7 @@ require 'google/protobuf/well_known_types'
 require 'protobuf3_fixer/version'
 require 'protobuf3_fixer/reflector'
 require 'protobuf3_fixer/encoder'
+require 'protobuf3_fixer/generation_helpers'
 
 module Protobuf3Fixer
   class << self
