@@ -22,18 +22,6 @@ RSpec.describe 'decoding a superset of fields via json' do
   let(:ts_subobject_json) do
   end
 
-  it 'generates incorrect behavior using the provided encoder' do
-    expect(
-      ts_subobject.to_json.yield_self(&JSON.method(:parse))
-    ).to eq(
-      'ts'    => { 'seconds' => 10 },
-      'tsOne' => { 'seconds' => 10 },
-      'tsTwo' => { 'seconds' => 10 },
-      'foo'   => [{ 'seconds' => 10 }],
-      'bar'   => { 'a' => { 'seconds' => 10 } }
-    )
-  end
-
   it 'works on a strait up timestamp' do
     expect(
       Protobuf3Fixer.encode_json(
