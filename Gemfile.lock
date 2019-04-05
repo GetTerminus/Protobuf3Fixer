@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     protobuf3_fixer (0.1.0)
-      google-protobuf
+      google-protobuf (~> 3.7)
 
 GEM
   remote: https://rubygems.org/
