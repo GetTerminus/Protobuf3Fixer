@@ -27,7 +27,7 @@ RSpec.describe 'decoding a superset of fields via json' do
       Protobuf3Fixer.encode_json(
         Google::Protobuf::Timestamp.new(seconds: 10)
       )
-    ).to eq(Time.at(10).utc.to_datetime.rfc3339.to_json)
+    ).to eq('1970-01-01T00:00:10Z'.to_json)
   end
 
   it 'generates timestamps encoded as RFC3339' do
@@ -35,11 +35,11 @@ RSpec.describe 'decoding a superset of fields via json' do
       Protobuf3Fixer.encode_json(ts_subobject)
         .yield_self(&JSON.method(:parse))
     ).to eq(
-      'ts'    => Time.at(10).utc.to_datetime.rfc3339,
-      'tsOne' => Time.at(10).utc.to_datetime.rfc3339,
-      'tsTwo' => Time.at(10).utc.to_datetime.rfc3339,
-      'foo'   => [Time.at(10).utc.to_datetime.rfc3339],
-      'bar'   => { 'a' => Time.at(10).utc.to_datetime.rfc3339 }
+      'ts'    => '1970-01-01T00:00:10Z',
+      'tsOne' => '1970-01-01T00:00:10Z',
+      'tsTwo' => '1970-01-01T00:00:10Z',
+      'foo'   => ['1970-01-01T00:00:10Z'],
+      'bar'   => { 'a' => '1970-01-01T00:00:10Z' }
     )
   end
 
@@ -58,11 +58,11 @@ RSpec.describe 'decoding a superset of fields via json' do
         Protobuf3Fixer.encode_json(ts_parentobj).yield_self(&JSON.method(:parse))
       ).to eq(
         'abc' => {
-          'ts'    => Time.at(10).utc.to_datetime.rfc3339,
-          'tsOne' => Time.at(10).utc.to_datetime.rfc3339,
-          'tsTwo' => Time.at(10).utc.to_datetime.rfc3339,
-          'foo'   => [Time.at(10).utc.to_datetime.rfc3339],
-          'bar'   => { 'a' => Time.at(10).utc.to_datetime.rfc3339 },
+          'ts'    => '1970-01-01T00:00:10Z',
+          'tsOne' => '1970-01-01T00:00:10Z',
+          'tsTwo' => '1970-01-01T00:00:10Z',
+          'foo'   => ['1970-01-01T00:00:10Z'],
+          'bar'   => { 'a' => '1970-01-01T00:00:10Z' },
         }
       )
     end

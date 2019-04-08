@@ -18,7 +18,7 @@ module Protobuf3Fixer
     def clean_encoded_json_for_klass
       case required_typefix
       when :timestamp
-        DateTime.rfc3339(data).to_time.utc.to_datetime.rfc3339
+        data
       else
         deep_parse_object
       end
